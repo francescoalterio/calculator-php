@@ -1,12 +1,8 @@
 <?php 
 
     $result = '';
+    $buttonPressed = '0';
 
-    function calculator1($str){ 
-       eval("\$str = $str;");
-       return $str;
-    }
-    
     if($_POST) {
         $result = $_POST['input-result'];
         $buttonPressed = $_POST['btn'];
@@ -25,11 +21,9 @@
                 if($lastCharacter !== '%' && $lastCharacter !== '/'  && $lastCharacter !== '*'  && $lastCharacter !== '-'  && $lastCharacter !== '+'  && $lastCharacter !== '.') {
                     $result = $result.$buttonPressed;
                 };
-           }
-        }elseif($buttonPressed === '=') {
-            $result = calculator1($result);
+           };
         };
-    }
+    };
 ?>
 
 <!DOCTYPE html>
@@ -46,6 +40,13 @@
         <form action="" method="post">
             <div class="box-result">
                 <?php echo '<input type="text" class="input-result" name="input-result" id="" value="'.$result.'" >'?>
+                <?php if($buttonPressed === '='): ?>
+                    <script>
+                        const $inputResult = document.querySelector('.input-result');
+
+                        $inputResult.value = eval($inputResult.value)
+                    </script>
+                <?php endif?>
             </div>
             <div class="box-buttons">
                 <input type="submit" value="AC" name="btn" class="button">
