@@ -1,15 +1,19 @@
 <?php 
 
     $result = '';
-    $buttonPressed = '0';
 
+    function calculator1($str){ 
+       eval("\$str = $str;");
+       return $str;
+    }
+    
     if($_POST) {
         $result = $_POST['input-result'];
         $buttonPressed = $_POST['btn'];
 
         if($buttonPressed === 'AC') {
             $result = '';
-        } elseif ($buttonPressed >= 0 && $buttonPressed <= 9) {
+        } elseif (is_numeric($buttonPressed) && $buttonPressed >= 0 && $buttonPressed <= 9) {
             $result = $result.$buttonPressed;
         } elseif($buttonPressed === 'D') {
             $lastCharacterEliminated = substr($result, 0, -1);
@@ -21,9 +25,11 @@
                 if($lastCharacter !== '%' && $lastCharacter !== '/'  && $lastCharacter !== '*'  && $lastCharacter !== '-'  && $lastCharacter !== '+'  && $lastCharacter !== '.') {
                     $result = $result.$buttonPressed;
                 };
-           };
+           }
+        }elseif($buttonPressed === '=') {
+            $result = calculator1($result);
         };
-    };
+    }
 ?>
 
 <!DOCTYPE html>
@@ -39,14 +45,7 @@
     <div class="background">
         <form action="" method="post">
             <div class="box-result">
-                <?php echo '<input type="text" class="input-result" name="input-result" id="" value="'.$result.'" >'?>
-                <?php if($buttonPressed === '='): ?>
-                    <script>
-                        const $inputResult = document.querySelector('.input-result');
-
-                        $inputResult.value = eval($inputResult.value)
-                    </script>
-                <?php endif?>
+                <?php echo '<input type="text" name="input-result" id="" value="'.$result.'" class="input-result">'?>
             </div>
             <div class="box-buttons">
                 <input type="submit" value="AC" name="btn" class="button">
